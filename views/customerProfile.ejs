@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+<body style="background-color: #E9ECEF;font-weight: 700;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" style="font-family: 'Kaushan Script', cursive;" href="/home">Nutrify.me</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav" style="margin-left: auto;">
+            <li class="nav-item ">
+              <a class="nav-link" href="/home">Home </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/add/meal">Add Meals</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/profile">Profile <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="container" >
+        <form class="form-control" method="POST" action="/api/user/update" style="background-color: white;margin: 50px;">
+            <fieldset>
+            
+            <!-- Form Name -->
+            <legend>Profile</legend>
+            
+            <!-- Text input-->
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="textinput">First Name</label>  
+              <div class="col-md-4">
+              <input id="textinput" name="firstName" type="text" value="<%= result.firstName %>" placeholder="firstName" class="form-control input-md">
+              <span class="help-block">* First Name </span>  
+              </div>
+            </div>
+            
+            <!-- Text input-->
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="textinput">Last Name</label>  
+              <div class="col-md-4">
+              <input id="textinput" name="LastName" type="text" placeholder="LastName" value="<%= result.lastName %>" class="form-control input-md">
+              <span class="help-block">help</span>  
+              </div>
+            </div>
+            
+            <!-- Textarea -->
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="textarea">Calories Per Day</label>
+              <div class="col-md-4">                     
+                <input id="textinput" name="caloriesPerDay" type="text" placeholder="calories Per Day"
+                value="<%= result.caloriesPerDay %>" class="form-control input-md" required>
+              </div>
+            </div>
+            
+            <!-- Text input-->
+            <div class="form-group col-md-4">
+              <label class=" control-label" for="textinput">Phone No</label>  
+              <div class="">
+              <input id="textinput" name="phoneNo" value="<%= result.phoneNo %>" type="number" placeholder="Phone No." class="form-control input-md" required>
+              <span class="help-block">*Phone Number</span>  
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <label class=" control-label" for="textinput">Email Id</label>  
+              <div class="">
+              <input id="textinput" name="email" type="email" value="<%= result.email %>" placeholder="Email id @ " class="form-control input-md" required>
+              <span class="help-block">*Email id</span>  
+              </div>
+            </div>
+            <!-- Button -->
+            <!-- <div class="form-group col-md-6">
+              <label class="control-label" for="singlebutton">Single Button</label>
+              <div class="">
+                <button id="singlebutton" name="singlebutton" class="btn btn-primary">Fetch From Nutritionix.com</button>
+              </div>
+            </div> -->
+            
+            <!-- Button -->
+            <div class="form-group">
+              <!-- <label class="col-md-4 control-label" for="singlebutton">Single Button</label> -->
+              <div class="col-md-4">
+                <button id="singlebutton" type="submit" name="singlebutton" class="btn btn-primary">Update</button>
+              </div>
+            </div>
+            <p class="text-center">                                 
+              <% if (message!=undefined) { %>
+                 <h6 class="text-danger"><%= message %></h6>
+               <% } %>
+           </p>
+            </fieldset>
+            </form>
+            
+      </div>
+</body>
+<script>
+  function logout(){
+    localStorage.clear();
+  }
+</script>

@@ -1,0 +1,147 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" style="font-family: 'Kaushan Script', cursive;" href="#">Nutrify.me</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav" style="margin-left: auto;">
+
+        <li class="nav-item active">
+          <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+        </li>
+       
+        <% if(userInfo.is_admin === "1"){ %>
+        <li class="nav-item">
+          <a class="nav-link" href="/all/user">All User</a>
+        </li>
+        <% } %>
+        <li class="nav-item">
+          <a class="nav-link" href="/add/meal">Add Meals</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/profile">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <main class="container">
+    <form class="form-control" action="/home/date" method="POST">
+      <div class="row">
+        <div class="col-md-3">
+          <!-- <label for="birthday">Filter : </label> -->
+          <input type="date" class="form-control" value="" id="birthday" name="dateFilter">
+        </div>
+        <div>
+          <button type="submit" class="btn btn-info">Filter</button>
+        </div>
+      </div>
+    </form>
+    <% if(userInfo.is_admin == '1'){ %>
+    <form class="form-control" action="">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">            
+               <label for="selectbasic">Select User</label>
+                <select id="selectbasic" name="selectbasic" class="form-control col-md-3">
+                  <option value="1">Option one</option>
+                  <option value="2">Option two</option>
+                </select>
+            </div>
+        </div>
+      </div>
+     
+    </form>
+  <% } %>
+
+     <!-- <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+          <h1 class="display-4">Pricing</h1>
+          <p class="lead">Quickly build an effective pricing table for your potential customers with this Bootstrap example. It’s built with default Bootstrap components and utilities with little customization.</p>
+        </div> -->
+    <% if(Math.floor((consumeCalories /userInfo.caloriesPerDay)*100) <=100){ %>
+      <div class="jumbotron text-center">
+        <h1>Calorie Intake: <%= Math.floor(consumeCalories*100)/100 %> / <%= userInfo.caloriesPerDay %>
+        </h1>
+        <div class="container myprogress">
+          <div class="progress" style="height: 40px;background-color: black;">
+            <div class="progress-bar " role="progressbar"
+              style="width:  <%= ((consumeCalories /userInfo.caloriesPerDay)*100) %>%;">
+              <b>
+                <%= Math.floor((consumeCalories /userInfo.caloriesPerDay)*100) %> %
+              </b>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% }else{ %>
+        <div class="jumbotron text-center">
+          <h5 style="text-align: center;" class="text-danger">Use Have Crossed Your Daily Calories Consumption <h5>
+              <h1>Calorie Intake: <%= consumeCalories %> / <%= userInfo.caloriesPerDay %>
+              </h1>
+              <div class="container myprogress">
+                <div class="progress" style="height: 40px;background-color: black;">
+                  <div class="progress-bar" role="progressbar"
+                    style="width:  <%= ((consumeCalories /userInfo.caloriesPerDay)*100) %>%;background-color: red;">
+                    <b>
+                      <%= Math.floor((consumeCalories /userInfo.caloriesPerDay)*100) %> %
+                    </b>
+                  </div>
+                </div>
+              </div>
+        </div>
+        <%}%>
+          <div class="row  text-center">
+            <% if(mealList.length> 0){ %>
+              <% mealList.forEach(function(meal){ %>
+                <div class="col-md-4">
+                  <div class="card mb-4 shadow-sm">
+                    <div class="card-header">
+                      <h4 class="my-0 fw-normal">
+                        <%= meal.mealName %>
+                      </h4>
+                    </div>
+                    <div class="card-body">
+                      <h1 class="card-title pricing-card-title">
+                        <%= meal.calories %><small class="text-muted"> Calories</small>
+                      </h1>
+                      <ul class="list-unstyled mt-3 mb-4">
+                        <li>
+                          <%= meal.description %>
+                        </li>
+                        <li>
+                          <%= meal.mealType %>
+                        </li>
+                        <!-- <li>Email support</li>
+                <li>Help center access</li> -->
+                      </ul>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <a href="/add/meal/<%= meal._id %>" class="w-100 btn btn-lg btn-primary">Edit</a>
+                        </div>
+                        <div class="col-md-6">
+                          <a href="/delete/meal/<%= meal._id %>" class="w-100 btn btn-lg btn-warning">Delete</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <% })}else{ %>
+                  <h2>No Meals Found Please !</h2>
+                  <%}%>
+          </div>
+  </main>
+</body>

@@ -1,0 +1,128 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+<body style="background-color: #E9ECEF;font-weight: 700;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" style="font-family: 'Kaushan Script', cursive;" href="/home">Nutrify.me</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav" style="margin-left: auto;">
+            <li class="nav-item ">
+                <a class="nav-link" href="/home">Home </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="/add/meal">Add Meals<span class="sr-only">(current)</span></a>
+              </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/profile">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="container" >
+        <form method="POST"  action="/api/meals/update/<%= data._id %>" style="background-color: white;margin: 50px;" class="form-control">
+            <fieldset>
+            
+            <!-- Form Name -->
+            <legend>Add Meal</legend>
+            
+            <!-- Text input-->
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="textinput">Meal Name</label>  
+              <div class="col-md-4">
+              <input  name="mealName" value="<%= data.mealName %>" id="mealName" type="text" placeholder="Meal Name" class="form-control input-md" required>
+              <span class="help-block">* Name of the meal</span>  
+              </div>
+            </div>
+            
+            <!-- Text input-->
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="textinput">Meal Type</label>  
+              <div class="col-md-4">
+              <input id="textinput" name="mealType" type="text" value="<%= data.mealType %>" placeholder="Meal Type" class="form-control input-md">
+              <span class="help-block">* Meal Type</span>  
+              </div>
+            </div>
+            
+            <!-- Textarea -->
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="textarea">Description</label>
+              <div class="col-md-4">                     
+                <textarea class="form-control" value="<%= data.description %>" id="textarea" name="description"></textarea>
+              </div>
+            </div>
+            
+            <!-- Text input-->
+            <div class="row">
+            <div class="form-group col-md-4">
+              <label class=" control-label" for="textinput">Calories</label>  
+              <div class="">
+              <input id="calories" value="<%= data.calories %>" name="calories" type="text" placeholder="Calories" class="form-control input-md">
+              <!-- <span class="help-block">*fatch d</span>   -->
+              </div>
+            </div>
+            
+            <!-- Button -->
+            <div class="form-group col-md-6" style="margin-top: 20px;">
+              <label class="control-label" for="singlebutton"></label>
+              <div class="">
+                <button onclick="nutritionClick()" type="button" id="singlebutton" name="singlebutton" class="btn btn-primary">Fetch From Nutritionix.com</button>
+              </div>
+            </div>
+            </div>
+            <!-- Button -->
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="singlebutton"></label>
+              <div class="col-md-4">
+                <button id="singlebutton" name="singlebutton" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+            <p class="text-center">                                 
+              <% if (message!=undefined) { %>
+                 <h6 class="text-danger"><%= message %></h6>
+               <% } %>
+           </p>
+            </fieldset>
+            </form>
+            
+      </div>
+</body>
+<script>
+  function logout(){
+    localStorage.clear();
+  }
+
+  function  nutritionClick(){
+    debugger
+    let productName = document.getElementById('mealName').value;
+    let query = {
+      "query" : productName
+    }
+    let result =  fetch(
+        "https://trackapi.nutritionix.com/v2/natural/nutrients",{
+      method:"POST",
+      body : JSON.stringify(query),
+      headers:{
+        'Content-Type':'application/json',
+        "x-app-id": '4941bda1',
+      'x-app-key': '2489e0e8dfea3356ffeffff17c1dfc36'
+      }
+    }
+  );
+  result.then(res=>{
+    res.json().then(d=>{
+    document.getElementById('calories').value = d.foods[0].nf_calories;
+    })
+  }) 
+
+  }
+</script>
